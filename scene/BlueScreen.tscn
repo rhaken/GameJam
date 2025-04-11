@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3 uid="uid://bw8fl26ldp8xj"]
+
+[ext_resource type="Script" uid="uid://cpncnbbxd8yu4" path="res://script/BlueScreen.cs" id="1_yxk86"]
+
+[node name="BlueScreen" type="ColorRect"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0.666667, 1)
+script = ExtResource("1_yxk86")

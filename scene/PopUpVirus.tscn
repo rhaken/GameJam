@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://b6jc7boaki7au"]
+
+[ext_resource type="Script" uid="uid://b3ikpokegcftj" path="res://script/PopupAdd.cs" id="1_401af"]
+[ext_resource type="Script" uid="uid://dtx1n5yxxp7fx" path="res://script/RandomPopup.cs" id="1_qoj0b"]
+
+[node name="Window" type="Window"]
+position = Vector2i(376, 124)
+size = Vector2i(400, 400)
+script = ExtResource("1_401af")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_qoj0b")
+
+[connection signal="close_requested" from="." to="." method="_on_close_requested"]

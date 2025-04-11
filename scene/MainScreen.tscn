@@ -1,0 +1,140 @@
+[gd_scene load_steps=9 format=3 uid="uid://8v8m0e33g6ej"]
+
+[ext_resource type="Script" uid="uid://dg816ffo6sdxr" path="res://script/WallPaper.cs" id="1_opnkj"]
+[ext_resource type="Texture2D" uid="uid://brcjjea56nlqr" path="res://assets/background/sunflowers.jpg" id="1_rel2r"]
+[ext_resource type="Script" uid="uid://cqrsfafxxiqho" path="res://script/CpuGui.cs" id="2_v4imr"]
+[ext_resource type="Texture2D" uid="uid://bonc0llf3cg1j" path="res://assets/icon/document.png" id="3_h0q2p"]
+[ext_resource type="Script" uid="uid://c165jwkmxixyp" path="res://script/Waktu.cs" id="3_rel2r"]
+[ext_resource type="Script" uid="uid://bitb07jkisek1" path="res://script/HoverableButton.cs" id="3_ylo3x"]
+[ext_resource type="Texture2D" uid="uid://8haaljqtnp12" path="res://assets/icon/terminal.png" id="5_f48gd"]
+
+[sub_resource type="Theme" id="Theme_v4imr"]
+default_font_size = 25
+
+[node name="WallPaper" type="TextureRect"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("1_rel2r")
+script = ExtResource("1_opnkj")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_bottom = 23.0
+grow_horizontal = 0
+theme = SubResource("Theme_v4imr")
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+script = ExtResource("2_v4imr")
+
+[node name="Label2" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -20.0
+offset_top = -23.0
+offset_right = 20.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 70
+script = ExtResource("3_rel2r")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_right = 78.0
+offset_bottom = 164.0
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(10, 0)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="Folder" type="TextureButton" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource("3_h0q2p")
+script = ExtResource("3_ylo3x")
+HoverIndicatorPath = NodePath("ColorRect")
+SelectedIndicatorPath = NodePath("ColorRect2")
+TargetScenePath = "uid://cuio3fj3tlksp"
+
+[node name="ColorRect" type="ColorRect" parent="VBoxContainer/HBoxContainer/VBoxContainer/Folder"]
+visible = false
+layout_mode = 0
+offset_left = -2.0
+offset_top = -2.0
+offset_right = 68.0
+offset_bottom = 67.0
+mouse_filter = 2
+color = Color(0.2, 0.6, 1, 0.266667)
+
+[node name="ColorRect2" type="ColorRect" parent="VBoxContainer/HBoxContainer/VBoxContainer/Folder"]
+visible = false
+layout_mode = 0
+offset_left = -2.0
+offset_top = -2.0
+offset_right = 68.0
+offset_bottom = 67.0
+mouse_filter = 2
+color = Color(0.2, 0.6, 1, 0.266667)
+
+[node name="MarginContainer3" type="MarginContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="Terminal" type="TextureButton" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+texture_normal = ExtResource("5_f48gd")
+script = ExtResource("3_ylo3x")
+HoverIndicatorPath = NodePath("ColorRect")
+SelectedIndicatorPath = NodePath("ColorRect2")
+TargetScenePath = "uid://o3lvekex5hbf"
+
+[node name="ColorRect" type="ColorRect" parent="VBoxContainer/HBoxContainer/VBoxContainer/Terminal"]
+visible = false
+layout_mode = 0
+offset_left = -2.0
+offset_top = -2.0
+offset_right = 68.0
+offset_bottom = 67.0
+mouse_filter = 2
+color = Color(0.2, 0.6, 1, 0.266667)
+
+[node name="ColorRect2" type="ColorRect" parent="VBoxContainer/HBoxContainer/VBoxContainer/Terminal"]
+visible = false
+layout_mode = 0
+offset_left = -2.0
+offset_top = -2.0
+offset_right = 68.0
+offset_bottom = 67.0
+mouse_filter = 2
+color = Color(0.2, 0.6, 1, 0.266667)

@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://bwh0cifgx0ttn"]
+
+[node name="TaskBar" type="CanvasLayer"]
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="BackGround" type="TextureRect" parent="Control"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="StartButton" type="TextureButton" parent="Control/HBoxContainer"]
+layout_mode = 2
+
+[node name="BrowserButton" type="TextureButton" parent="Control/HBoxContainer"]
+layout_mode = 2
+
+[node name="TerminalButton" type="TextureButton" parent="Control/HBoxContainer"]
+layout_mode = 2

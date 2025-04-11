@@ -1,0 +1,45 @@
+[gd_scene load_steps=3 format=3 uid="uid://cjqoawtbsp4a2"]
+
+[ext_resource type="Script" uid="uid://cin2t5cm1byl7" path="res://script/AntiVirusPage.cs" id="1_jjdb2"]
+[ext_resource type="PackedScene" uid="uid://bbooxs55lu8g3" path="res://scene/ListVirusPage.tscn" id="2_emept"]
+
+[node name="AntiVirusPage" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_jjdb2")
+VirusCardScene = ExtResource("2_emept")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.941176, 0.956863, 0.972549, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="VirusList" type="VBoxContainer" parent="VBoxContainer/MarginContainer/ScrollContainer"]
+layout_mode = 2
+theme_override_constants/separation = 100

@@ -1,0 +1,145 @@
+[gd_scene load_steps=11 format=3 uid="uid://bkv08j3tbabbc"]
+
+[ext_resource type="Texture2D" uid="uid://58t42onamuac" path="res://assets/icon/virus.png" id="1_6i8xv"]
+[ext_resource type="Script" uid="uid://crb5x7x3ua36j" path="res://script/WindowScript.cs" id="1_sg2ed"]
+[ext_resource type="Texture2D" uid="uid://3qlnjhkemrws" path="res://assets/icon/virus_pressed.png" id="2_t07i6"]
+[ext_resource type="Texture2D" uid="uid://241fqdmowum5" path="res://assets/icon/tool.png" id="2_wgav4"]
+[ext_resource type="Script" uid="uid://d3vdpt7pcmrxc" path="res://script/ButtonWeb.cs" id="4_0ftot"]
+[ext_resource type="Texture2D" uid="uid://djrkutse6ijav" path="res://assets/icon/tool_pressed.png" id="4_44w2s"]
+[ext_resource type="PackedScene" uid="uid://cjqoawtbsp4a2" path="res://scene/AntiVirusPage.tscn" id="6_06128"]
+
+[sub_resource type="Theme" id="Theme_7qnqs"]
+
+[sub_resource type="FontVariation" id="FontVariation_7qnqs"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7qnqs"]
+content_margin_left = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 3.0
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.854902, 0.862745, 0.878431, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[node name="WebBrowser" type="Window"]
+mode = 4
+title = "WebBrowser"
+initial_position = 1
+size = Vector2i(1000, 500)
+theme = SubResource("Theme_7qnqs")
+script = ExtResource("1_sg2ed")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="ColorRect" type="ColorRect" parent="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.873298, 0.873298, 0.873298, 1)
+
+[node name="CenterContainer" type="CenterContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1.0
+offset_bottom = -7.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/CenterContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Control/CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.20686, 0.166176, 0.101377, 1)
+theme_override_fonts/font = SubResource("FontVariation_7qnqs")
+text = "EXPLORER"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/CenterContainer/VBoxContainer"]
+custom_minimum_size = Vector2(300, 30)
+layout_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="Control/CenterContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/caret_color = Color(0, 0, 0, 1)
+theme_override_colors/font_placeholder_color = Color(0.627451, 0.627451, 0.627451, 1)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_7qnqs")
+placeholder_text = "Search here.."
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/CenterContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Control/CenterContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/CenterContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="Control/CenterContainer/VBoxContainer/HBoxContainer2/VBoxContainer"]
+layout_mode = 2
+
+[node name="TextureButton" type="TextureButton" parent="Control/CenterContainer/VBoxContainer/HBoxContainer2/VBoxContainer/CenterContainer" node_paths=PackedStringArray("rootNode")]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource("1_6i8xv")
+texture_hover = ExtResource("2_t07i6")
+script = ExtResource("4_0ftot")
+sceneToLoad = ExtResource("6_06128")
+rootNode = NodePath("../../../../../../..")
+
+[node name="CenterContainer2" type="CenterContainer" parent="Control/CenterContainer/VBoxContainer/HBoxContainer2/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Control/CenterContainer/VBoxContainer/HBoxContainer2/VBoxContainer/CenterContainer2"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Virus Wiki"
+horizontal_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/CenterContainer/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(140, 0)
+layout_mode = 2
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="Control/CenterContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="Control/CenterContainer/VBoxContainer/HBoxContainer2/VBoxContainer2"]
+layout_mode = 2
+
+[node name="TextureButton" type="TextureButton" parent="Control/CenterContainer/VBoxContainer/HBoxContainer2/VBoxContainer2/CenterContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource("2_wgav4")
+texture_hover = ExtResource("4_44w2s")
+
+[node name="CenterContainer2" type="CenterContainer" parent="Control/CenterContainer/VBoxContainer/HBoxContainer2/VBoxContainer2"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Control/CenterContainer/VBoxContainer/HBoxContainer2/VBoxContainer2/CenterContainer2"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Tools"
+horizontal_alignment = 1
+
+[connection signal="close_requested" from="." to="." method="_on_close_requested"]

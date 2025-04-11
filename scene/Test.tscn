@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=3 uid="uid://dax46h51a76fx"]
+
+[ext_resource type="Script" uid="uid://b3vjmk0t3yq4a" path="res://script/TestScript.cs" id="1_5gdc7"]
+[ext_resource type="Texture2D" uid="uid://241fqdmowum5" path="res://assets/icon/tool.png" id="1_ers1e"]
+
+[node name="Test" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+
+[node name="TextureButton" type="TextureButton" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture_normal = ExtResource("1_ers1e")
+script = ExtResource("1_5gdc7")
+
+[node name="ColorRect" type="ColorRect" parent="TextureButton"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(1.6, 1.60714)
+mouse_filter = 2
+
+[connection signal="mouse_entered" from="TextureButton" to="TextureButton" method="_on_mouse_entered"]

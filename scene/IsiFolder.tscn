@@ -1,0 +1,23 @@
+[gd_scene load_steps=2 format=3 uid="uid://cvunep7ohe03s"]
+
+[ext_resource type="Script" uid="uid://b687bpv2by7ox" path="res://script/IsiFolder.cs" id="1_7yya3"]
+
+[node name="IsiFolder" type="Control" node_paths=PackedStringArray("iconRect", "nameLabel")]
+layout_mode = 3
+anchors_preset = 0
+mouse_filter = 2
+script = ExtResource("1_7yya3")
+iconRect = NodePath("HBoxContainer/TextureRect")
+nameLabel = NodePath("HBoxContainer/Label")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+mouse_filter = 2
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer"]
+layout_mode = 2
