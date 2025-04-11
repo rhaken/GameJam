@@ -113,6 +113,7 @@ layout_mode = 2
 
 [node name="Terminal" type="TextureButton" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
+mouse_default_cursor_shape = 2
 texture_normal = ExtResource("5_f48gd")
 script = ExtResource("3_ylo3x")
 HoverIndicatorPath = NodePath("ColorRect")

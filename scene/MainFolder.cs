@@ -327,7 +327,7 @@ public partial class MainFolder : VBoxContainer
 					if (isFakeFile)
 					{
 						// Asumsikan nilai CpuLoadPerFakeFile adalah 2 (sesuai dengan kode WallPaper)
-						const int CpuLoadPerFakeFile = 2;
+						const int CpuLoadPerFakeFile = 10;
 						
 						// Kurangi CPU load
 						Global.CpuProcess -= CpuLoadPerFakeFile;
