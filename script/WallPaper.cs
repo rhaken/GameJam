@@ -11,7 +11,7 @@ public partial class WallPaper : TextureRect
 	private const double SpawnInterval = 3.0;
 	
 	// Interval untuk update file (dalam detik)
-	private const double FileUpdateInterval = 60.0; // 1 menit
+	private const double FileUpdateInterval = 10.0;
 	private double _lastFileUpdateTime = 0;
 	private int _currentFakeFiles = 0;
 	private const int InitialDelayMinutes = 1; // 5 menit pertama file asli semua
@@ -36,10 +36,33 @@ public partial class WallPaper : TextureRect
 	private const int HighCpuBlueScreenChance = 50; // 50% chance when CPU is high
 	private const int CriticalCpuThreshold = 100; // Critical CPU threshold for forced crash
 	
+	// Popup movement parameters
+	private const double PopupMoveInterval = 6.0; // Move popup every 6 seconds
+	private List<PopupVirusInfo> _activePopups = new List<PopupVirusInfo>();
+	
+	// Sound effects for fake files
+	private AudioStreamPlayer _fakeFileAudioPlayer;
+	private const string _fakeFileIncreaseSfxPath = "res://assets/sound/ambientfile.wav";
+	
 	// Kategori file yang akan diupdate (sesuai dengan kategori di Global.cs)
 	private readonly string[] _fileCategories = { "system", "download", "video", "picture", "music" };
 	private const string DefaultCategory = "system"; // Kategori default untuk tampilan
 	private string _currentCategory = DefaultCategory;
+	
+	// Class untuk menyimpan informasi popup virus
+	private class PopupVirusInfo
+	{
+		public Window PopupWindow { get; set; }
+		public double LastMoveTime { get; set; }
+		public double SpawnTime { get; set; }
+		
+		public PopupVirusInfo(Window window, double spawnTime)
+		{
+			PopupWindow = window;
+			LastMoveTime = spawnTime;
+			SpawnTime = spawnTime;
+		}
+	}
 	
 	public override void _Ready()
 	{
@@ -55,6 +78,9 @@ public partial class WallPaper : TextureRect
 				Texture = tex;
 			}
 		}
+		
+		// Initialize audio player for fake file sound effects
+		InitializeFakeFileAudio();
 		
 		// Inisialisasi file dengan semua file asli (0 palsu)
 		UpdateAllCategoriesFiles();
@@ -78,10 +104,49 @@ public partial class WallPaper : TextureRect
 		}
 	}
 	
+	// Initialize audio player for fake file sound effects
+	private void InitializeFakeFileAudio()
+	{
+		_fakeFileAudioPlayer = new AudioStreamPlayer();
+		AddChild(_fakeFileAudioPlayer);
+		
+		// Set volume and other properties
+		_fakeFileAudioPlayer.VolumeDb = -10.0f; // Adjust volume as needed
+		_fakeFileAudioPlayer.Bus = "Master"; // Use Master audio bus
+		
+		GD.Print("[Audio] Fake file audio player initialized");
+	}
+	
+	// Play fake file increase sound effect
+	private void PlayFakeFileSfx()
+	{
+		if (_fakeFileAudioPlayer == null)
+		{
+			GD.PrintErr("[Audio] Fake file audio player is null!");
+			return;
+		}
+		
+		// Load the single sound effect for fake file increase
+		var audioStream = GD.Load<AudioStream>(_fakeFileIncreaseSfxPath);
+		if (audioStream != null)
+		{
+			_fakeFileAudioPlayer.Stream = audioStream;
+			_fakeFileAudioPlayer.Play();
+			GD.Print($"[Audio] Playing fake files increase SFX: {_fakeFileIncreaseSfxPath}");
+		}
+		else
+		{
+			GD.PrintErr($"[Audio] Failed to load SFX: {_fakeFileIncreaseSfxPath}");
+		}
+	}
+	
 	public override void _Process(double delta)
 	{
 		// Always get the elapsed time, even if game hasn't started
 		double totalTime = Global.ElapsedTime;
+		
+		// Update popup movements
+		UpdatePopupMovements(totalTime);
 		
 		// Only process game mechanics if the game has been started
 		if (!Global.IsStarted)
@@ -131,6 +196,50 @@ public partial class WallPaper : TextureRect
 		
 		// Check for Blue Screen condition
 		CheckForBlueScreenTrigger(totalTime);
+	}
+	
+	// Method untuk mengupdate pergerakan popup
+	private void UpdatePopupMovements(double totalTime)
+	{
+		// Clean up destroyed popups first
+		_activePopups.RemoveAll(popupInfo => 
+			popupInfo.PopupWindow == null || 
+			!popupInfo.PopupWindow.IsInsideTree() || 
+			popupInfo.PopupWindow.IsQueuedForDeletion());
+		
+		// Update positions for remaining popups
+		foreach (var popupInfo in _activePopups)
+		{
+			// Check if it's time to move this popup
+			if (totalTime - popupInfo.LastMoveTime >= PopupMoveInterval)
+			{
+				MovePopupToRandomPosition(popupInfo, totalTime);
+			}
+		}
+	}
+	
+	// Method untuk memindahkan popup ke posisi random
+	private void MovePopupToRandomPosition(PopupVirusInfo popupInfo, double currentTime)
+	{
+		if (popupInfo.PopupWindow == null || !popupInfo.PopupWindow.IsInsideTree())
+			return;
+		
+		Vector2 screenSize = GetViewport().GetVisibleRect().Size;
+		Vector2 windowSize = popupInfo.PopupWindow.Size;
+		
+		// Calculate safe bounds for popup position
+		float maxX = Math.Max(0, screenSize.X - windowSize.X);
+		float maxY = Math.Max(0, screenSize.Y - windowSize.Y);
+		
+		// Generate random position
+		float randomX = (float)Global.Rnd.NextDouble() * maxX;
+		float randomY = (float)Global.Rnd.NextDouble() * maxY;
+		
+		// Set new position
+		popupInfo.PopupWindow.Position = new Vector2I((int)randomX, (int)randomY);
+		popupInfo.LastMoveTime = currentTime;
+		
+		GD.Print($"[PopupVirus] Moved popup to position ({randomX}, {randomY}) at time {currentTime}");
 	}
 	
 	// Method to check if Win Screen should be shown
@@ -399,9 +508,20 @@ public partial class WallPaper : TextureRect
 				// Update hanya jika jumlah file palsu berubah
 				if (targetFakeFiles != _currentFakeFiles)
 				{
+					int previousFakeFiles = _currentFakeFiles;
 					_currentFakeFiles = targetFakeFiles;
 					UpdateAllCategoriesFiles();
-					GD.Print($"[FileSystem] Minute {minutesPassed}: Updated to {_currentFakeFiles} fake files for all categories");
+					
+					// Play sound effect when new fake files are generated
+					if (_currentFakeFiles > previousFakeFiles)
+					{
+						PlayFakeFileSfx();
+						GD.Print($"[FileSystem] Minute {minutesPassed}: Updated to {_currentFakeFiles} fake files for all categories - SFX played!");
+					}
+					else
+					{
+						GD.Print($"[FileSystem] Minute {minutesPassed}: Updated to {_currentFakeFiles} fake files for all categories");
+					}
 					
 					// Debug: Print file listing untuk kategori yang sedang aktif
 					PrintCurrentFilesDebug();
@@ -538,7 +658,29 @@ public partial class WallPaper : TextureRect
 			float randomY = (float)Global.Rnd.NextDouble() * (screenSize.Y - windowSize.Y);
 			popupWindow.Position = new Vector2I((int)randomX, (int)randomY);
 			GetTree().Root.AddChild(popupWindow);
+			
+			// Add popup to tracking list
+			var popupInfo = new PopupVirusInfo(popupWindow, Global.ElapsedTime);
+			_activePopups.Add(popupInfo);
+			
+			GD.Print($"[PopupVirus] Spawned new popup at position ({randomX}, {randomY}). Total active popups: {_activePopups.Count}");
+			
+			// Connect to the popup's close/destroy signal if available
+			// This helps clean up the tracking list when popup is closed
+			if (popupWindow.HasSignal("close_requested"))
+			{
+				popupWindow.CloseRequested += () => {
+					RemovePopupFromTracking(popupWindow);
+				};
+			}
 		}
+	}
+	
+	// Method to remove popup from tracking when it's closed
+	private void RemovePopupFromTracking(Window popupWindow)
+	{
+		_activePopups.RemoveAll(info => info.PopupWindow == popupWindow);
+		GD.Print($"[PopupVirus] Popup removed from tracking. Remaining active popups: {_activePopups.Count}");
 	}
 	
 	private string GetWallpaperPath()
@@ -650,5 +792,17 @@ public partial class WallPaper : TextureRect
 	public void DebugCurrentFiles()
 	{
 		PrintCurrentFilesDebug();
+	}
+	
+	// Public method to get current active popups count (untuk debugging)
+	public int GetActivePopupsCount()
+	{
+		return _activePopups.Count;
+	}
+	
+	// Public method to manually trigger fake file sound effect (untuk testing)
+	public void TestFakeFileSfx()
+	{
+		PlayFakeFileSfx();
 	}
 }
